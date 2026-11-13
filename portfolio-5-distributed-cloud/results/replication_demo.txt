@@ -1,0 +1,60 @@
+################ Demo 1: replication status ################
+On the PRIMARY - who is copying from me?
+ client_addr |   state   | sync_state | replay_lag 
+-------------+-----------+------------+------------
+ 172.20.0.3  | streaming | async      | 
+(1 row)
+
+Is each server a standby (read-only copy)?
+  primary:  f   (f = no, it is the primary)
+  replica:  t   (t = yes, it is a standby)
+
+################ Demo 2: write on primary, read on replica ################
+[PRIMARY] register a new taxpayer, TIN 2000000002
+[REPLICA] one second later, look for the same taxpayer:
+    tin     | taxpayer_name 
+------------+---------------
+ 2000000002 | Replica Demo
+(1 row)
+
+[PRIMARY] how long did the replica take to apply that change? (replication lag)
+   state   | sync_state |  replay_lag  
+-----------+------------+--------------
+ streaming | async      | 00:00:00.001
+(1 row)
+
+
+################ Demo 3: the replica is read-only ################
+[REPLICA] try to change data:
+ERROR:  cannot execute UPDATE in a read-only transaction
+[REPLICA] reading still works:
+ taxpayers 
+-----------
+      2001
+(1 row)
+
+
+################ Demo 4: failover ################
+Step 1: the PRIMARY crashes (container killed)
+Step 2: [REPLICA] reads still work (taxpayers can still view their records):
+ taxpayers 
+-----------
+      2001
+(1 row)
+
+Step 3: [REPLICA] but writes are refused (no primary any more):
+ERROR:  cannot execute UPDATE in a read-only transaction
+Step 4: PROMOTE the replica to be the new primary:
+ promoted 
+----------
+ t
+(1 row)
+
+Step 5: [NEW PRIMARY] is it still a standby?   f   (f = no, it is now the primary)
+Step 6: [NEW PRIMARY] writes work again:
+    tin     | status 
+------------+--------
+ 2000000002 | CLOSED
+(1 row)
+
+Failover complete. No committed data was lost.

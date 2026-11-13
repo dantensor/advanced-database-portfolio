@@ -50,14 +50,14 @@ NRS's publicly known mandate.
 | `portfolio-2-query-optimisation/` | Query Processing and Optimisation | ✅ Draft complete |
 | `portfolio-3-transactions-concurrency/` | Transactions and Concurrency | ✅ Draft complete |
 | `portfolio-4-nosql/` | NoSQL and Advanced Data Models | ✅ Draft complete |
-| `portfolio-5-distributed-cloud/` | Distributed and Cloud Database | ⬜ Not started |
+| `portfolio-5-distributed-cloud/` | Distributed and Cloud Database | ✅ Draft complete |
 
 ## Tools Used
 - **PostgreSQL 16** (running in Docker), relational database for Portfolios 1–3
 - **pgAdmin 4** (running in Docker), graphical tool for running SQL and viewing execution plans
 - **Docker Desktop**, runs all databases without installing them directly
 - **MongoDB 7.0** + **mongo-express** (running in Docker), document database for Portfolio 4 (web viewer at http://localhost:8081)
-- *(Later)* multiple PostgreSQL containers for Portfolio 5
+- **Two extra PostgreSQL 16 containers** (primary + replica), streaming replication for Portfolio 5
 
 ## How to Run
 ```bash

@@ -1,0 +1,54 @@
+# =====================================================================
+# MIT 8103 Portfolio 5: a small DISTRIBUTED database
+#
+#   pg_primary  (port 5433) - accepts reads AND writes
+#        |  streaming replication (copies every change, continuously)
+#        v
+#   pg_replica  (port 5434) - a live read-only copy
+#
+# Separate from the main docker-compose.yml so Portfolios 1-4 are not
+# affected. Start/stop with the scripts in this folder.
+# Local practice passwords only.
+# =====================================================================
+name: nrs-distributed
+
+services:
+  pg_primary:
+    image: postgres:16
+    container_name: nrs_pg_primary
+    environment:
+      POSTGRES_USER: nrs_admin
+      POSTGRES_PASSWORD: nrs_password
+      POSTGRES_DB: nrs_tax_db
+    # turn on the write-ahead log settings that replication needs
+    command: postgres -c wal_level=replica -c max_wal_senders=5 -c hot_standby=on
+    ports:
+      - "127.0.0.1:5433:5432"
+    volumes:
+      - ./primary-init.sh:/docker-entrypoint-initdb.d/primary-init.sh:ro
+
+  pg_replica:
+    image: postgres:16
+    container_name: nrs_pg_replica
+    environment:
+      PGPASSWORD: repl_password      # password of the replication user
+    # First start: copy the whole primary with pg_basebackup.
+    # -R writes the settings that make this server a read-only standby.
+    entrypoint: ["bash", "-c"]
+    command:
+      - |
+        chown -R postgres:postgres /var/lib/postgresql/data
+        chmod 700 /var/lib/postgresql/data
+        if [ ! -s /var/lib/postgresql/data/PG_VERSION ]; then
+          echo "Copying the primary..."
+          until gosu postgres pg_basebackup -h pg_primary -U replicator \
+                  -D /var/lib/postgresql/data -R -X stream; do
+            echo "Primary not ready yet, retrying..."; sleep 2
+            rm -rf /var/lib/postgresql/data/*
+          done
+        fi
+        exec gosu postgres postgres
+    ports:
+      - "127.0.0.1:5434:5432"
+    depends_on:
+      - pg_primary

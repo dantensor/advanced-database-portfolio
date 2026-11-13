@@ -1,0 +1,24 @@
+
+=== Rows in each partition (fragment) ===
+   partition   | payments | first_date | last_date  
+---------------+----------+------------+------------
+ payment_y2024 |     1991 | 2024-03-14 | 2024-12-25
+ payment_y2025 |     8489 | 2025-01-02 | 2025-12-31
+ payment_y2026 |     9306 | 2026-01-01 | 2026-11-13
+(3 rows)
+
+=== Query for 2025 revenue: which partitions are read? ===
+(only payment_y2025 should appear: this is "partition pruning")
+                                           QUERY PLAN                                           
+------------------------------------------------------------------------------------------------
+ Aggregate
+   ->  Seq Scan on payment_y2025 payment_by_year
+         Filter: ((payment_date >= '2025-01-01'::date) AND (payment_date < '2026-01-01'::date))
+(3 rows)
+
+=== Same answer as the normal table? ===
+ partitioned_table |  normal_table  
+-------------------+----------------
+    86839691563.38 | 86839691563.38
+(1 row)
+
