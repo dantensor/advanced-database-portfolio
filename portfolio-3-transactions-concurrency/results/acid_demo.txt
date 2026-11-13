@@ -1,0 +1,42 @@
+
+=== A. ATOMICITY: all or nothing ===
+Register a new taxpayer = 2 inserts. The 2nd insert fails (the NIN is
+already used by taxpayer 1), so the 1st insert must be undone too.
+Step 1 done: taxpayer row inserted (not yet committed).
+ERROR:  duplicate key value violates unique constraint "individual_taxpayer_nin_key"
+DETAIL:  Key (nin)=(30000001013) already exists.
+Is the half-registered taxpayer in the database? (expect 0 rows)
+ taxpayer_id | tin 
+-------------+-----
+(0 rows)
+
+
+=== B. CONSISTENCY: rules are never broken ===
+Try to use N150,000 from a credit of N100,000. CHECK (balance >= 0) refuses it.
+ERROR:  new row for relation "tax_credit" violates check constraint "tax_credit_balance_check"
+DETAIL:  Failing row contains (1, -50000.00).
+ taxpayer_id |  balance  
+-------------+-----------
+           1 | 100000.00
+(1 row)
+
+
+=== C. SAVEPOINT: undo only part of a transaction ===
+Use N20,000 of credit, then a mistaken N5,000,000 entry is rolled back to
+the savepoint. The good N20,000 step is kept.
+ERROR:  new row for relation "tax_credit" violates check constraint "tax_credit_balance_check"
+DETAIL:  Failing row contains (2, -4920000.00).
+Taxpayer 2 balance (expect 80000.00):
+ taxpayer_id | balance  
+-------------+----------
+           2 | 80000.00
+(1 row)
+
+
+=== D. ISOLATION ===
+Needs two sessions at the same time. See 03_concurrency_demos.sh.
+
+=== E. DURABILITY ===
+Once COMMIT returns, the change is safe in the write-ahead log (WAL),
+even if the server crashes. 03_concurrency_demos.sh proves it by
+restarting the database container and reading the data again.

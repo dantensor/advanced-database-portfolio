@@ -1,0 +1,15 @@
+################ demo1_lost_update ################
+----- Session A -----
+[A t=0s] reads balance = 100000.00
+[A t=2s] enough credit -> uses N60,000, writes balance = 40000.00
+[A] committed
+----- Session B -----
+[B t=1s] reads balance = 100000.00   (A has not committed yet)
+[B t=3s] enough credit -> uses N60,000, writes balance = 40000.00
+[B] committed
+----- Final balance -----
+ taxpayer_id | balance  
+-------------+----------
+           1 | 40000.00
+(1 row)
+

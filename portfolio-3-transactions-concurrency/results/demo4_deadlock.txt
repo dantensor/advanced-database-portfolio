@@ -1,0 +1,22 @@
+################ demo4_deadlock ################
+----- Session A -----
+[A t=0s] locked taxpayer 1
+[A t=2s] wants taxpayer 2 (held by B) ... waiting
+[A] got taxpayer 2
+[A] committed
+----- Session B -----
+[B t=1s] locked taxpayer 2
+[B t=4s] wants taxpayer 1 (held by A) ... waiting
+ERROR:  deadlock detected
+DETAIL:  Process 228 waits for ShareLock on transaction 1826; blocked by process 226.
+Process 226 waits for ShareLock on transaction 1827; blocked by process 228.
+HINT:  See server log for query details.
+CONTEXT:  while updating tuple (0,61) in relation "tax_credit"
+[B] cancelled by PostgreSQL as the deadlock victim
+[B] COMMIT is turned into ROLLBACK, so B changed nothing
+----- Final balance -----
+ taxpayer_id | balance  
+-------------+----------
+           1 | 99000.00
+(1 row)
+

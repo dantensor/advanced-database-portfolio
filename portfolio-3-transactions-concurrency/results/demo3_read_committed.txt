@@ -1,0 +1,12 @@
+################ demo3_read_committed ################
+----- Session A -----
+[A t=0s] READ COMMITTED - 1st read: balance = 100000.00
+[A t=2s] READ COMMITTED - 2nd read: balance = 70000.00
+----- Session B -----
+[B t=1s] used N30,000 and committed (balance is now 70000.00)
+----- Final balance -----
+ taxpayer_id | balance  
+-------------+----------
+           1 | 70000.00
+(1 row)
+

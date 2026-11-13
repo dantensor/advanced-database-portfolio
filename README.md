@@ -48,7 +48,7 @@ NRS's publicly known mandate.
 |---|---|---|
 | `portfolio-1-database-design/` | Database Design and Modelling | ✅ Draft complete |
 | `portfolio-2-query-optimisation/` | Query Processing and Optimisation | ✅ Draft complete |
-| `portfolio-3-transactions-concurrency/` | Transactions and Concurrency | ⬜ Not started |
+| `portfolio-3-transactions-concurrency/` | Transactions and Concurrency | ✅ Draft complete |
 | `portfolio-4-nosql/` | NoSQL and Advanced Data Models | ⬜ Not started |
 | `portfolio-5-distributed-cloud/` | Distributed and Cloud Database | ⬜ Not started |
 

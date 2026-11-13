@@ -1,0 +1,16 @@
+################ demo2_fixed_with_for_update ################
+----- Session A -----
+[A t=0s] reads balance = 100000.00
+[A t=2s] enough credit -> uses N60,000, writes balance = 40000.00
+[A] committed
+----- Session B -----
+[B t=1s] asks for the row with FOR UPDATE ... (A holds the lock, B must wait)
+[B t=2s] lock granted after A committed. Reads balance = 40000.00
+[B] NOT enough credit -> request refused
+[B] committed
+----- Final balance -----
+ taxpayer_id | balance  
+-------------+----------
+           1 | 40000.00
+(1 row)
+

@@ -1,0 +1,12 @@
+################ demo3_repeatable_read ################
+----- Session A -----
+[A t=0s] REPEATABLE READ - 1st read: balance = 100000.00
+[A t=2s] REPEATABLE READ - 2nd read: balance = 100000.00
+----- Session B -----
+[B t=1s] used N30,000 and committed (balance is now 70000.00)
+----- Final balance -----
+ taxpayer_id | balance  
+-------------+----------
+           1 | 70000.00
+(1 row)
+
