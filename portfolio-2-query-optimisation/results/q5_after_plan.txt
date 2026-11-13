@@ -1,0 +1,12 @@
+                                                                     QUERY PLAN                                                                     
+----------------------------------------------------------------------------------------------------------------------------------------------------
+ Limit  (cost=0.29..35.89 rows=50 width=14) (actual time=0.032..0.447 rows=50 loops=1)
+   Buffers: shared hit=48
+   ->  Index Scan using idx_return_review_queue on tax_return  (cost=0.29..22207.45 rows=31185 width=14) (actual time=0.031..0.438 rows=50 loops=1)
+         Buffers: shared hit=48
+ Planning:
+   Buffers: shared hit=174
+ Planning Time: 0.698 ms
+ Execution Time: 0.476 ms
+(8 rows)
+

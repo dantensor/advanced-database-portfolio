@@ -1,0 +1,24 @@
+                                                                 QUERY PLAN                                                                  
+---------------------------------------------------------------------------------------------------------------------------------------------
+ Limit  (cost=13220.94..13226.77 rows=50 width=14) (actual time=43.878..49.366 rows=50 loops=1)
+   Buffers: shared hit=5418 read=4064
+   ->  Gather Merge  (cost=13220.94..16144.11 rows=25054 width=14) (actual time=43.876..49.357 rows=50 loops=1)
+         Workers Planned: 2
+         Workers Launched: 2
+         Buffers: shared hit=5418 read=4064
+         ->  Sort  (cost=12220.91..12252.23 rows=12527 width=14) (actual time=40.653..40.657 rows=50 loops=3)
+               Sort Key: filing_date
+               Sort Method: top-N heapsort  Memory: 28kB
+               Buffers: shared hit=5418 read=4064
+               Worker 0:  Sort Method: top-N heapsort  Memory: 28kB
+               Worker 1:  Sort Method: top-N heapsort  Memory: 28kB
+               ->  Parallel Seq Scan on tax_return  (cost=0.00..11804.78 rows=12527 width=14) (actual time=8.016..38.192 rows=10356 loops=3)
+                     Filter: ((status)::text = 'UNDER_REVIEW'::text)
+                     Rows Removed by Filter: 143038
+                     Buffers: shared hit=5344 read=4064
+ Planning:
+   Buffers: shared hit=146
+ Planning Time: 0.940 ms
+ Execution Time: 49.425 ms
+(20 rows)
+

@@ -1,0 +1,70 @@
+                                                                                                            QUERY PLAN                                                                                                            
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Sort  (cost=16166.46..16166.56 rows=37 width=57) (actual time=165.812..174.892 rows=37 loops=1)
+   Sort Key: (sum(p.amount)) DESC
+   Sort Method: quicksort  Memory: 27kB
+   Buffers: shared hit=76408 read=1381
+   ->  Finalize GroupAggregate  (cost=16160.32..16165.50 rows=37 width=57) (actual time=165.665..174.843 rows=37 loops=1)
+         Group Key: s.geo_zone, s.state_name
+         Buffers: shared hit=76405 read=1381
+         ->  Gather Merge  (cost=16160.32..16164.58 rows=37 width=57) (actual time=165.650..174.756 rows=74 loops=1)
+               Workers Planned: 1
+               Workers Launched: 1
+               Buffers: shared hit=76405 read=1381
+               ->  Sort  (cost=15160.31..15160.40 rows=37 width=57) (actual time=161.356..161.365 rows=37 loops=2)
+                     Sort Key: s.geo_zone, s.state_name
+                     Sort Method: quicksort  Memory: 29kB
+                     Buffers: shared hit=76405 read=1381
+                     Worker 0:  Sort Method: quicksort  Memory: 29kB
+                     ->  Partial HashAggregate  (cost=15158.88..15159.35 rows=37 width=57) (actual time=161.233..161.256 rows=37 loops=2)
+                           Group Key: s.geo_zone, s.state_name
+                           Batches: 1  Memory Usage: 48kB
+                           Buffers: shared hit=76397 read=1381
+                           Worker 0:  Batches: 1  Memory Usage: 48kB
+                           ->  Hash Join  (cost=12927.37..15057.53 rows=10135 width=26) (actual time=137.572..155.568 rows=8828 loops=2)
+                                 Hash Cond: (o.state_id = s.state_id)
+                                 Buffers: shared hit=76397 read=1381
+                                 ->  Hash Join  (cost=12925.53..15026.05 rows=10135 width=11) (actual time=137.483..152.293 rows=8828 loops=2)
+                                       Hash Cond: (t.office_id = o.office_id)
+                                       Buffers: shared hit=76381 read=1381
+                                       ->  Parallel Hash Join  (cost=12923.52..14994.93 rows=10135 width=13) (actual time=137.409..149.280 rows=8828 loops=2)
+                                             Hash Cond: (t.taxpayer_id = r.taxpayer_id)
+                                             Buffers: shared hit=76365 read=1381
+                                             ->  Parallel Seq Scan on taxpayer t  (cost=0.00..1882.12 rows=29412 width=8) (actual time=0.854..4.012 rows=25000 loops=2)
+                                                   Buffers: shared hit=1588
+                                             ->  Parallel Hash  (cost=12833.78..12833.78 rows=7179 width=13) (actual time=135.760..135.763 rows=8828 loops=2)
+                                                   Buckets: 32768  Batches: 1  Memory Usage: 1088kB
+                                                   Buffers: shared hit=74777 read=1381
+                                                   ->  Nested Loop  (cost=745.19..12833.78 rows=7179 width=13) (actual time=28.375..131.113 rows=8828 loops=2)
+                                                         Buffers: shared hit=74777 read=1381
+                                                         ->  Parallel Hash Join  (cost=744.76..8956.50 rows=7179 width=13) (actual time=28.264..101.359 rows=8828 loops=2)
+                                                               Hash Cond: (a.assessment_id = p.assessment_id)
+                                                               Buffers: shared hit=4148 read=1381
+                                                               ->  Parallel Seq Scan on assessment a  (cost=0.00..7424.28 rows=198728 width=8) (actual time=0.022..36.701 rows=238474 loops=2)
+                                                                     Buffers: shared hit=4056 read=1381
+                                                               ->  Parallel Hash  (cost=618.08..618.08 rows=10135 width=13) (actual time=5.917..5.918 rows=8828 loops=2)
+                                                                     Buckets: 32768  Batches: 1  Memory Usage: 1120kB
+                                                                     Buffers: shared hit=92
+                                                                     ->  Parallel Index Only Scan using idx_payment_date_cover on payment p  (cost=0.42..618.08 rows=10135 width=13) (actual time=0.047..2.550 rows=8828 loops=2)
+                                                                           Index Cond: ((payment_date >= '2026-10-01'::date) AND (payment_date < '2026-11-01'::date))
+                                                                           Heap Fetches: 0
+                                                                           Buffers: shared hit=92
+                                                         ->  Index Scan using tax_return_pkey on tax_return r  (cost=0.42..0.54 rows=1 width=8) (actual time=0.003..0.003 rows=1 loops=17657)
+                                                               Index Cond: (return_id = a.return_id)
+                                                               Buffers: shared hit=70629
+                                       ->  Hash  (cost=1.45..1.45 rows=45 width=6) (actual time=0.034..0.034 rows=45 loops=2)
+                                             Buckets: 1024  Batches: 1  Memory Usage: 10kB
+                                             Buffers: shared hit=2
+                                             ->  Seq Scan on tax_office o  (cost=0.00..1.45 rows=45 width=6) (actual time=0.008..0.017 rows=45 loops=2)
+                                                   Buffers: shared hit=2
+                                 ->  Hash  (cost=1.37..1.37 rows=37 width=19) (actual time=0.053..0.053 rows=37 loops=2)
+                                       Buckets: 1024  Batches: 1  Memory Usage: 10kB
+                                       Buffers: shared hit=2
+                                       ->  Seq Scan on state s  (cost=0.00..1.37 rows=37 width=19) (actual time=0.027..0.034 rows=37 loops=2)
+                                             Buffers: shared hit=2
+ Planning:
+   Buffers: shared hit=753
+ Planning Time: 3.382 ms
+ Execution Time: 175.280 ms
+(66 rows)
+

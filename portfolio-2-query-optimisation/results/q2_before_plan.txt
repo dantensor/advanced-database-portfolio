@@ -1,0 +1,12 @@
+                                                QUERY PLAN                                                
+----------------------------------------------------------------------------------------------------------
+ Seq Scan on taxpayer  (cost=0.00..2338.00 rows=250 width=24) (actual time=36.707..60.124 rows=1 loops=1)
+   Filter: (lower((email)::text) = 'taxpayer31337@mail.example'::text)
+   Rows Removed by Filter: 49999
+   Buffers: shared hit=1588
+ Planning:
+   Buffers: shared hit=113
+ Planning Time: 0.504 ms
+ Execution Time: 60.256 ms
+(8 rows)
+

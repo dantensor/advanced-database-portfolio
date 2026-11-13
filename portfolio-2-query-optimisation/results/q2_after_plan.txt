@@ -1,0 +1,11 @@
+                                                             QUERY PLAN                                                             
+------------------------------------------------------------------------------------------------------------------------------------
+ Index Scan using idx_taxpayer_email_lower on taxpayer  (cost=0.41..8.43 rows=1 width=24) (actual time=0.028..0.029 rows=1 loops=1)
+   Index Cond: (lower((email)::text) = 'taxpayer31337@mail.example'::text)
+   Buffers: shared hit=4
+ Planning:
+   Buffers: shared hit=138
+ Planning Time: 0.613 ms
+ Execution Time: 0.063 ms
+(7 rows)
+

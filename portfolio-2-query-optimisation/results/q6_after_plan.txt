@@ -1,0 +1,12 @@
+                                                                       QUERY PLAN                                                                       
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+ Limit  (cost=0.29..0.98 rows=10 width=35) (actual time=0.035..0.226 rows=10 loops=1)
+   Buffers: shared hit=12
+   ->  Index Scan using idx_mv_balance_owed on mv_taxpayer_balance  (cost=0.29..3466.39 rows=50000 width=35) (actual time=0.034..0.223 rows=10 loops=1)
+         Buffers: shared hit=12
+ Planning:
+   Buffers: shared hit=122
+ Planning Time: 0.570 ms
+ Execution Time: 0.277 ms
+(8 rows)
+

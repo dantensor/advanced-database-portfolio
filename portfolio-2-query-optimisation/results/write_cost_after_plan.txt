@@ -1,0 +1,18 @@
+                                                                            QUERY PLAN                                                                             
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Insert on payment  (cost=0.42..2675.17 rows=0 width=0) (actual time=1141.557..1141.559 rows=0 loops=1)
+   Buffers: shared hit=651735 read=555 dirtied=902 written=347
+   ->  Subquery Scan on "*SELECT*"  (cost=0.42..2675.17 rows=50000 width=136) (actual time=0.120..127.528 rows=50000 loops=1)
+         Buffers: shared hit=50152
+         ->  Limit  (cost=0.42..1675.17 rows=50000 width=104) (actual time=0.065..54.099 rows=50000 loops=1)
+               Buffers: shared hit=140
+               ->  Index Only Scan using assessment_pkey on assessment  (cost=0.42..15975.73 rows=476947 width=104) (actual time=0.063..45.482 rows=50000 loops=1)
+                     Heap Fetches: 0
+                     Buffers: shared hit=140
+ Planning:
+   Buffers: shared hit=111
+ Planning Time: 0.588 ms
+ Trigger for constraint payment_assessment_id_fkey: time=633.585 calls=50000
+ Execution Time: 1780.758 ms
+(14 rows)
+

@@ -1,0 +1,178 @@
+                                                                                                    QUERY PLAN                                                                                                    
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Limit  (cost=120376.42..120376.45 rows=10 width=75) (actual time=2784.434..2800.307 rows=10 loops=1)
+   Buffers: shared hit=68649 read=38798, temp read=3596 written=7305
+   ->  Sort  (cost=120376.42..120501.42 rows=50000 width=75) (actual time=2702.850..2718.721 rows=10 loops=1)
+         Sort Key: v_taxpayer_balance.balance_owed DESC
+         Sort Method: top-N heapsort  Memory: 26kB
+         Buffers: shared hit=68649 read=38798, temp read=3596 written=7305
+         ->  Subquery Scan on v_taxpayer_balance  (cost=115295.37..119295.94 rows=50000 width=75) (actual time=2449.733..2693.645 rows=50000 loops=1)
+               Buffers: shared hit=68646 read=38798, temp read=3596 written=7305
+               ->  Hash Left Join  (cost=115295.37..118795.94 rows=50000 width=207) (actual time=2449.727..2683.879 rows=50000 loops=1)
+                     Hash Cond: (t.taxpayer_id = refunded.taxpayer_id)
+                     Buffers: shared hit=68646 read=38798, temp read=3596 written=7305
+                     ->  Hash Left Join  (cost=97841.33..100585.64 rows=50000 width=152) (actual time=2298.459..2475.482 rows=50000 loops=1)
+                           Hash Cond: (t.taxpayer_id = paid.taxpayer_id)
+                           Buffers: shared hit=23302 read=29025, temp read=3596 written=7305
+                           ->  Hash Left Join  (cost=52996.02..55609.07 rows=50000 width=120) (actual time=1258.672..1392.492 rows=50000 loops=1)
+                                 Hash Cond: (t.taxpayer_id = pen.taxpayer_id)
+                                 Buffers: shared hit=13788 read=13376, temp read=2037 written=3964
+                                 ->  Hash Left Join  (cost=31516.54..33998.32 rows=50000 width=88) (actual time=767.714..871.589 rows=50000 loops=1)
+                                       Hash Cond: (t.taxpayer_id = due.taxpayer_id)
+                                       Buffers: shared hit=8981 read=7955, temp read=1891 written=3655
+                                       ->  Hash Left Join  (cost=1628.00..3978.52 rows=50000 width=56) (actual time=41.735..107.889 rows=50000 loops=1)
+                                             Hash Cond: (t.taxpayer_id = c.taxpayer_id)
+                                             Buffers: shared hit=401 read=1690
+                                             ->  Hash Left Join  (cost=1201.75..3421.01 rows=50000 width=27) (actual time=34.638..78.456 rows=50000 loops=1)
+                                                   Hash Cond: (t.taxpayer_id = i.taxpayer_id)
+                                                   Buffers: shared hit=256 read=1690
+                                                   ->  Seq Scan on taxpayer t  (cost=0.00..2088.00 rows=50000 width=15) (actual time=11.062..25.301 rows=50000 loops=1)
+                                                         Buffers: shared hit=34 read=1554
+                                                   ->  Hash  (cost=733.00..733.00 rows=37500 width=16) (actual time=23.127..23.128 rows=37500 loops=1)
+                                                         Buckets: 65536  Batches: 1  Memory Usage: 2383kB
+                                                         Buffers: shared hit=222 read=136
+                                                         ->  Seq Scan on individual_taxpayer i  (cost=0.00..733.00 rows=37500 width=16) (actual time=0.071..9.367 rows=37500 loops=1)
+                                                               Buffers: shared hit=222 read=136
+                                             ->  Hash  (cost=270.00..270.00 rows=12500 width=33) (actual time=6.956..6.957 rows=12500 loops=1)
+                                                   Buckets: 16384  Batches: 1  Memory Usage: 944kB
+                                                   Buffers: shared hit=145
+                                                   ->  Seq Scan on company_taxpayer c  (cost=0.00..270.00 rows=12500 width=33) (actual time=0.012..2.897 rows=12500 loops=1)
+                                                         Buffers: shared hit=145
+                                       ->  Hash  (cost=29592.03..29592.03 rows=23721 width=36) (actual time=725.770..731.740 rows=49983 loops=1)
+                                             Buckets: 65536 (originally 32768)  Batches: 1 (originally 1)  Memory Usage: 2854kB
+                                             Buffers: shared hit=8580 read=6265, temp read=1891 written=3655
+                                             ->  Subquery Scan on due  (cost=29058.30..29592.03 rows=23721 width=36) (actual time=598.896..713.174 rows=49983 loops=1)
+                                                   Buffers: shared hit=8580 read=6265, temp read=1891 written=3655
+                                                   ->  Finalize HashAggregate  (cost=29058.30..29354.82 rows=23721 width=36) (actual time=598.890..704.609 rows=49983 loops=1)
+                                                         Group Key: r.taxpayer_id
+                                                         Batches: 5  Memory Usage: 10033kB  Disk Usage: 7488kB
+                                                         Buffers: shared hit=8580 read=6265, temp read=1891 written=3655
+                                                         ->  Gather  (cost=23661.78..28702.49 rows=47442 width=36) (actual time=383.694..486.229 rows=112189 loops=1)
+                                                               Workers Planned: 2
+                                                               Workers Launched: 2
+                                                               Buffers: shared hit=8580 read=6265, temp read=1128 written=2182
+                                                               ->  Partial HashAggregate  (cost=22661.78..22958.29 rows=23721 width=36) (actual time=359.035..439.671 rows=37396 loops=3)
+                                                                     Group Key: r.taxpayer_id
+                                                                     Batches: 5  Memory Usage: 8241kB  Disk Usage: 3616kB
+                                                                     Buffers: shared hit=8580 read=6265, temp read=1128 written=2182
+                                                                     Worker 0:  Batches: 5  Memory Usage: 8241kB  Disk Usage: 3608kB
+                                                                     Worker 1:  Batches: 5  Memory Usage: 8241kB  Disk Usage: 3600kB
+                                                                     ->  Parallel Hash Join  (cost=13722.20..21668.14 rows=198728 width=13) (actual time=117.151..258.902 rows=158982 loops=3)
+                                                                           Hash Cond: (a.return_id = r.return_id)
+                                                                           Buffers: shared hit=8580 read=6265
+                                                                           ->  Parallel Seq Scan on assessment a  (cost=0.00..7424.28 rows=198728 width=13) (actual time=0.035..30.148 rows=158982 loops=3)
+                                                                                 Buffers: shared hit=4239 read=1198
+                                                                           ->  Parallel Hash  (cost=11325.42..11325.42 rows=191742 width=8) (actual time=115.718..115.719 rows=153394 loops=3)
+                                                                                 Buckets: 524288  Batches: 1  Memory Usage: 22144kB
+                                                                                 Buffers: shared hit=4341 read=5067
+                                                                                 ->  Parallel Seq Scan on tax_return r  (cost=0.00..11325.42 rows=191742 width=8) (actual time=9.379..50.253 rows=153394 loops=3)
+                                                                                       Buffers: shared hit=4341 read=5067
+                                 ->  Hash  (cost=21182.97..21182.97 rows=23721 width=36) (actual time=490.767..490.773 rows=31789 loops=1)
+                                       Buckets: 32768  Batches: 1  Memory Usage: 1666kB
+                                       Buffers: shared hit=4807 read=5421, temp read=146 written=309
+                                       ->  Subquery Scan on pen  (cost=20649.25..21182.97 rows=23721 width=36) (actual time=431.173..479.531 rows=31789 loops=1)
+                                             Buffers: shared hit=4807 read=5421, temp read=146 written=309
+                                             ->  HashAggregate  (cost=20649.25..20945.76 rows=23721 width=36) (actual time=431.169..473.695 rows=31789 loops=1)
+                                                   Group Key: r_1.taxpayer_id
+                                                   Batches: 5  Memory Usage: 8241kB  Disk Usage: 1632kB
+                                                   Buffers: shared hit=4807 read=5421, temp read=146 written=309
+                                                   ->  Hash Join  (cost=3276.26..20103.42 rows=109167 width=10) (actual time=64.140..351.847 rows=109167 loops=1)
+                                                         Hash Cond: (r_1.return_id = p.return_id)
+                                                         Buffers: shared hit=4807 read=5421
+                                                         ->  Seq Scan on tax_return r_1  (cost=0.00..14009.81 rows=460181 width=8) (actual time=3.683..71.910 rows=460181 loops=1)
+                                                               Buffers: shared hit=4443 read=4965
+                                                         ->  Hash  (cost=1911.67..1911.67 rows=109167 width=10) (actual time=59.568..59.570 rows=109167 loops=1)
+                                                               Buckets: 131072  Batches: 1  Memory Usage: 5759kB
+                                                               Buffers: shared hit=364 read=456
+                                                               ->  Seq Scan on penalty p  (cost=0.00..1911.67 rows=109167 width=10) (actual time=0.117..23.481 rows=109167 loops=1)
+                                                                     Buffers: shared hit=364 read=456
+                           ->  Hash  (cost=44548.80..44548.80 rows=23721 width=36) (actual time=1039.590..1049.391 rows=49916 loops=1)
+                                 Buckets: 65536 (originally 32768)  Batches: 1 (originally 1)  Memory Usage: 2851kB
+                                 Buffers: shared hit=9514 read=15649, temp read=1559 written=3341
+                                 ->  Subquery Scan on paid  (cost=44015.07..44548.80 rows=23721 width=36) (actual time=917.373..1032.676 rows=49916 loops=1)
+                                       Buffers: shared hit=9514 read=15649, temp read=1559 written=3341
+                                       ->  Finalize HashAggregate  (cost=44015.07..44311.59 rows=23721 width=36) (actual time=917.368..1023.991 rows=49916 loops=1)
+                                             Group Key: r_2.taxpayer_id
+                                             Batches: 5  Memory Usage: 10033kB  Disk Usage: 7472kB
+                                             Buffers: shared hit=9514 read=15649, temp read=1559 written=3341
+                                             ->  Gather  (cost=38618.55..43659.26 rows=47442 width=36) (actual time=701.293..803.244 rows=114382 loops=1)
+                                                   Workers Planned: 2
+                                                   Workers Launched: 2
+                                                   Buffers: shared hit=9514 read=15649, temp read=802 written=1855
+                                                   ->  Partial HashAggregate  (cost=37618.55..37915.06 rows=23721 width=36) (actual time=678.206..750.427 rows=38127 loops=3)
+                                                         Group Key: r_2.taxpayer_id
+                                                         Batches: 5  Memory Usage: 8241kB  Disk Usage: 3440kB
+                                                         Buffers: shared hit=9514 read=15649, temp read=802 written=1855
+                                                         Worker 0:  Batches: 5  Memory Usage: 8241kB  Disk Usage: 3368kB
+                                                         Worker 1:  Batches: 5  Memory Usage: 8241kB  Disk Usage: 3408kB
+                                                         ->  Parallel Hash Join  (cost=23630.58..36712.38 rows=181233 width=13) (actual time=206.818..531.822 rows=165000 loops=3)
+                                                               Hash Cond: (a_1.return_id = r_2.return_id)
+                                                               Buffers: shared hit=9514 read=15649
+                                                               ->  Parallel Hash Join  (cost=9908.38..22514.45 rows=181233 width=13) (actual time=98.238..291.634 rows=165000 loops=3)
+                                                                     Hash Cond: (p_1.assessment_id = a_1.assessment_id)
+                                                                     Buffers: shared hit=5039 read=10716
+                                                                     ->  Parallel Seq Scan on payment p_1  (cost=0.00..12130.33 rows=181233 width=13) (actual time=0.127..52.549 rows=165000 loops=3)
+                                                                           Buffers: shared hit=704 read=9614
+                                                                     ->  Parallel Hash  (cost=7424.28..7424.28 rows=198728 width=8) (actual time=96.301..96.303 rows=158982 loops=3)
+                                                                           Buckets: 524288  Batches: 1  Memory Usage: 22816kB
+                                                                           Buffers: shared hit=4335 read=1102
+                                                                           ->  Parallel Seq Scan on assessment a_1  (cost=0.00..7424.28 rows=198728 width=8) (actual time=0.071..32.718 rows=158982 loops=3)
+                                                                                 Buffers: shared hit=4335 read=1102
+                                                               ->  Parallel Hash  (cost=11325.42..11325.42 rows=191742 width=8) (actual time=106.946..106.947 rows=153394 loops=3)
+                                                                     Buckets: 524288  Batches: 1  Memory Usage: 22176kB
+                                                                     Buffers: shared hit=4475 read=4933
+                                                                     ->  Parallel Seq Scan on tax_return r_2  (cost=0.00..11325.42 rows=191742 width=8) (actual time=10.995..45.857 rows=153394 loops=3)
+                                                                           Buffers: shared hit=4475 read=4933
+                     ->  Hash  (cost=17384.46..17384.46 rows=5566 width=36) (actual time=151.204..151.289 rows=4904 loops=1)
+                           Buckets: 8192  Batches: 1  Memory Usage: 294kB
+                           Buffers: shared hit=45344 read=9773
+                           ->  Subquery Scan on refunded  (cost=16642.72..17384.46 rows=5566 width=36) (actual time=137.397..149.614 rows=4904 loops=1)
+                                 Buffers: shared hit=45344 read=9773
+                                 ->  Finalize GroupAggregate  (cost=16642.72..17328.80 rows=5566 width=36) (actual time=137.393..148.784 rows=4904 loops=1)
+                                       Group Key: r_3.taxpayer_id
+                                       Buffers: shared hit=45344 read=9773
+                                       ->  Gather Merge  (cost=16642.72..17224.44 rows=4638 width=36) (actual time=137.368..142.493 rows=5312 loops=1)
+                                             Workers Planned: 2
+                                             Workers Launched: 2
+                                             Buffers: shared hit=45344 read=9773
+                                             ->  Partial GroupAggregate  (cost=15642.70..15689.08 rows=2319 width=36) (actual time=113.211..115.408 rows=1771 loops=3)
+                                                   Group Key: r_3.taxpayer_id
+                                                   Buffers: shared hit=45344 read=9773
+                                                   ->  Sort  (cost=15642.70..15648.50 rows=2319 width=12) (actual time=113.154..113.389 rows=1855 loops=3)
+                                                         Sort Key: r_3.taxpayer_id
+                                                         Sort Method: quicksort  Memory: 198kB
+                                                         Buffers: shared hit=45344 read=9773
+                                                         Worker 0:  Sort Method: quicksort  Memory: 107kB
+                                                         Worker 1:  Sort Method: quicksort  Memory: 106kB
+                                                         ->  Nested Loop  (cost=264.05..15513.08 rows=2319 width=12) (actual time=17.322..111.721 rows=1855 loops=3)
+                                                               Buffers: shared hit=45330 read=9773
+                                                               ->  Nested Loop  (cost=263.62..14260.62 rows=2319 width=12) (actual time=17.271..98.689 rows=1855 loops=3)
+                                                                     Buffers: shared hit=23295 read=9542
+                                                                     ->  Hash Join  (cost=263.20..13096.35 rows=2319 width=12) (actual time=17.190..84.570 rows=1855 loops=3)
+                                                                           Hash Cond: (p_2.payment_id = f.payment_id)
+                                                                           Buffers: shared hit=1068 read=9503
+                                                                           ->  Parallel Seq Scan on payment p_2  (cost=0.00..12130.33 rows=181233 width=8) (actual time=0.045..30.185 rows=165000 loops=3)
+                                                                                 Buffers: shared hit=815 read=9503
+                                                                           ->  Hash  (cost=193.62..193.62 rows=5566 width=12) (actual time=16.565..16.566 rows=5566 loops=3)
+                                                                                 Buckets: 8192  Batches: 1  Memory Usage: 324kB
+                                                                                 Buffers: shared hit=237
+                                                                                 ->  Seq Scan on refund f  (cost=0.00..193.62 rows=5566 width=12) (actual time=12.717..14.964 rows=5566 loops=3)
+                                                                                       Filter: ((status)::text = 'PAID'::text)
+                                                                                       Rows Removed by Filter: 3604
+                                                                                       Buffers: shared hit=237
+                                                                     ->  Index Scan using assessment_pkey on assessment a_2  (cost=0.42..0.50 rows=1 width=8) (actual time=0.007..0.007 rows=1 loops=5566)
+                                                                           Index Cond: (assessment_id = p_2.assessment_id)
+                                                                           Buffers: shared hit=22227 read=39
+                                                               ->  Index Scan using tax_return_pkey on tax_return r_3  (cost=0.42..0.54 rows=1 width=8) (actual time=0.006..0.006 rows=1 loops=5566)
+                                                                     Index Cond: (return_id = a_2.return_id)
+                                                                     Buffers: shared hit=22035 read=231
+ Planning:
+   Buffers: shared hit=744 read=36
+ Planning Time: 8.763 ms
+ JIT:
+   Functions: 300
+   Options: Inlining false, Optimization false, Expressions true, Deforming true
+   Timing: Generation 24.559 ms, Inlining 0.000 ms, Optimization 10.551 ms, Emission 212.064 ms, Total 247.174 ms
+ Execution Time: 2848.630 ms
+(174 rows)
+

@@ -11,6 +11,7 @@ services:
   postgres:
     image: postgres:16
     container_name: nrs_postgres
+    shm_size: 256mb          # shared memory for parallel queries (Docker default 64mb is too small)
     environment:
       POSTGRES_USER: nrs_admin
       POSTGRES_PASSWORD: nrs_password

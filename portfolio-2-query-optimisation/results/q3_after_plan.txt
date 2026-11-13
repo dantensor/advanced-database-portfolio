@@ -1,0 +1,17 @@
+                                                               QUERY PLAN                                                               
+----------------------------------------------------------------------------------------------------------------------------------------
+ Bitmap Heap Scan on tax_return r  (cost=133.73..9753.63 rows=2684 width=20) (actual time=0.838..5.498 rows=2360 loops=1)
+   Recheck Cond: ((tax_type_id = 2) AND (filing_date >= '2025-12-01'::date) AND (filing_date < '2026-01-01'::date))
+   Filter: (filing_date > due_date)
+   Rows Removed by Filter: 9133
+   Heap Blocks: exact=622
+   Buffers: shared hit=639
+   ->  Bitmap Index Scan on idx_return_type_filing  (cost=0.00..133.06 rows=8051 width=0) (actual time=0.740..0.740 rows=11493 loops=1)
+         Index Cond: ((tax_type_id = 2) AND (filing_date >= '2025-12-01'::date) AND (filing_date < '2026-01-01'::date))
+         Buffers: shared hit=17
+ Planning:
+   Buffers: shared hit=168
+ Planning Time: 0.776 ms
+ Execution Time: 5.697 ms
+(13 rows)
+

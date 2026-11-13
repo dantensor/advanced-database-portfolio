@@ -1,0 +1,16 @@
+                                                                                  QUERY PLAN                                                                                   
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Gather  (cost=1000.00..15201.75 rows=2 width=20) (actual time=28.962..52.282 rows=2360 loops=1)
+   Workers Planned: 2
+   Workers Launched: 2
+   Buffers: shared hit=3917 read=5491
+   ->  Parallel Seq Scan on tax_return r  (cost=0.00..14201.55 rows=1 width=20) (actual time=25.228..41.556 rows=787 loops=3)
+         Filter: ((filing_date > due_date) AND (tax_type_id = 2) AND (EXTRACT(year FROM filing_date) = '2025'::numeric) AND (EXTRACT(month FROM filing_date) = '12'::numeric))
+         Rows Removed by Filter: 152607
+         Buffers: shared hit=3917 read=5491
+ Planning:
+   Buffers: shared hit=163
+ Planning Time: 1.117 ms
+ Execution Time: 52.496 ms
+(12 rows)
+

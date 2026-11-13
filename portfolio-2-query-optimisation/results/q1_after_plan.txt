@@ -1,0 +1,15 @@
+                                                          QUERY PLAN                                                          
+------------------------------------------------------------------------------------------------------------------------------
+ Bitmap Heap Scan on individual_taxpayer  (cost=4.54..82.25 rows=24 width=29) (actual time=0.046..0.171 rows=32 loops=1)
+   Recheck Cond: (((last_name)::text = 'Okafor'::text) AND ((first_name)::text = 'Ngozi'::text))
+   Heap Blocks: exact=31
+   Buffers: shared hit=33
+   ->  Bitmap Index Scan on idx_individual_name  (cost=0.00..4.53 rows=24 width=0) (actual time=0.033..0.033 rows=32 loops=1)
+         Index Cond: (((last_name)::text = 'Okafor'::text) AND ((first_name)::text = 'Ngozi'::text))
+         Buffers: shared hit=2
+ Planning:
+   Buffers: shared hit=114
+ Planning Time: 0.536 ms
+ Execution Time: 0.219 ms
+(11 rows)
+

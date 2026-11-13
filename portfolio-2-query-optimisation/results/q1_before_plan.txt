@@ -1,0 +1,12 @@
+                                                    QUERY PLAN                                                    
+------------------------------------------------------------------------------------------------------------------
+ Seq Scan on individual_taxpayer  (cost=0.00..920.50 rows=26 width=29) (actual time=0.499..6.358 rows=32 loops=1)
+   Filter: (((last_name)::text = 'Okafor'::text) AND ((first_name)::text = 'Ngozi'::text))
+   Rows Removed by Filter: 37468
+   Buffers: shared hit=358
+ Planning:
+   Buffers: shared hit=89
+ Planning Time: 0.493 ms
+ Execution Time: 6.408 ms
+(8 rows)
+

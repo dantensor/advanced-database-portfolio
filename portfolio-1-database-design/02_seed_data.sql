@@ -12,6 +12,13 @@
 SET search_path TO nrs;
 SELECT setseed(0.8103);
 
+-- Data size. scale=1 (default) gives 2,000 taxpayers.
+-- Portfolio 2 loads scale=25 (50,000 taxpayers):  psql -v scale=25 ...
+\if :{?scale}
+\else
+  \set scale 1
+\endif
+
 -- "Today" for the simulation. Nothing is dated after this.
 CREATE TEMP TABLE sim AS SELECT DATE '2026-11-13' AS today;
 
@@ -106,7 +113,8 @@ FROM (
 ) o;
 
 -- ---------------------------------------------------------------------
--- Taxpayers: 1,500 individuals (ids 1-1500) + 500 companies (1501-2000)
+-- Taxpayers: 1,500 individuals (ids 1-1500) + 500 companies (1501-2000),
+-- multiplied by :scale
 -- 35% registered in Lagos offices, 15% in Abuja, the rest anywhere.
 -- ---------------------------------------------------------------------
 CREATE TEMP TABLE office_pick AS SELECT
@@ -118,7 +126,7 @@ INSERT INTO taxpayer (taxpayer_id, tin, taxpayer_type, office_id, registration_d
                       email, phone, address, status)
 SELECT g,
        to_char(1000000000 + g * 4271, 'FM0000000000'),
-       CASE WHEN g <= 1500 THEN 'I' ELSE 'C' END,
+       CASE WHEN g <= 1500 * :scale THEN 'I' ELSE 'C' END,
        CASE WHEN r < 0.35 THEN lagos[1 + floor(random() * array_length(lagos, 1))::int]
             WHEN r < 0.50 THEN fct  [1 + floor(random() * array_length(fct, 1))::int]
             ELSE all_offices[1 + floor(random() * array_length(all_offices, 1))::int] END,
@@ -127,7 +135,7 @@ SELECT g,
        '080' || lpad((10000000 + g * 37)::text, 8, '0'),
        g || ' Market Road',
        CASE WHEN s < 0.92 THEN 'ACTIVE' WHEN s < 0.98 THEN 'DORMANT' ELSE 'CLOSED' END
-FROM (SELECT g, random() AS r, random() AS s FROM generate_series(1, 2000) g) x, office_pick;
+FROM (SELECT g, random() AS r, random() AS s FROM generate_series(1, 2000 * :scale) g) x, office_pick;
 SELECT setval('taxpayer_taxpayer_id_seq', (SELECT max(taxpayer_id) FROM taxpayer));
 
 -- Who registered each taxpayer: an officer from the same office
@@ -143,7 +151,7 @@ SELECT g,
        DATE '1955-01-01' + floor(random() * 17500)::int,          -- born 1955 .. ~2002
        to_char(30000000000 + g * 1013, 'FM00000000000'),
        occupations[1 + floor(random() * array_length(occupations, 1))::int]
-FROM generate_series(1, 1500) g, names;
+FROM generate_series(1, 1500 * :scale) g, names;
 
 INSERT INTO company_taxpayer (taxpayer_id, company_name, rc_number, incorporation_date, business_sector)
 SELECT g,
@@ -153,7 +161,7 @@ SELECT g,
        'RC' || (100000 + g * 17),
        DATE '1990-01-01' + floor(random() * 9000)::int,
        sectors[1 + floor(random() * array_length(sectors, 1))::int]
-FROM generate_series(1501, 2000) g, names;
+FROM generate_series(1500 * :scale + 1, 2000 * :scale) g, names;
 
 -- ---------------------------------------------------------------------
 -- Tax returns
