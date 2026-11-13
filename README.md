@@ -1,6 +1,6 @@
 # Advanced Database Systems Portfolio – MIT 8103
 
-**Student:** _[Your full name]_ | **Matric No:** _[Your number]_
+**Student:** Daniel Ugbudia | **Matric No.:** 301932324 | **Email:** d.ugbudia32324@miva.edu.ng
 **Session:** 2026/2027, First Semester
 
 ---
@@ -46,7 +46,7 @@ NRS's publicly known mandate.
 
 | Folder | Portfolio | Status |
 |---|---|---|
-| `portfolio-1-database-design/` | Database Design and Modelling | ⏳ In progress |
+| `portfolio-1-database-design/` | Database Design and Modelling | ✅ Draft complete |
 | `portfolio-2-query-optimisation/` | Query Processing and Optimisation | ⬜ Not started |
 | `portfolio-3-transactions-concurrency/` | Transactions and Concurrency | ⬜ Not started |
 | `portfolio-4-nosql/` | NoSQL and Advanced Data Models | ⬜ Not started |

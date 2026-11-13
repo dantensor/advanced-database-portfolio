@@ -1,0 +1,125 @@
+ taxpayer_id |    tin     | taxpayer_type | taxpayer_name 
+-------------+------------+---------------+---------------
+        2001 | 2000000001 | I             | Ada Demo
+(1 row)
+
+    tin     | taxpayer_name | total_assessed | total_penalties | total_paid | balance_owed 
+------------+---------------+----------------+-----------------+------------+--------------
+ 2000000001 | Ada Demo      |     1440000.00 |        25000.00 |          0 |   1465000.00
+(1 row)
+
+    tin     | taxpayer_name | total_assessed | total_penalties | total_paid | balance_owed 
+------------+---------------+----------------+-----------------+------------+--------------
+ 2000000001 | Ada Demo      |     1440000.00 |        25000.00 | 1500000.00 |    -35000.00
+(1 row)
+
+    tin     | taxpayer_name | total_assessed | total_penalties | total_paid | total_refunded | balance_owed 
+------------+---------------+----------------+-----------------+------------+----------------+--------------
+ 2000000001 | Ada Demo      |     1440000.00 |        25000.00 | 1500000.00 |       35000.00 |         0.00
+(1 row)
+
+   geo_zone    | state_name | paying_taxpayers | revenue_collected 
+---------------+------------+------------------+-------------------
+ South West    | Lagos      |              742 |    42511957396.36
+ North Central | FCT Abuja  |              349 |    12708135820.63
+ South East    | Abia       |               30 |     2602469123.37
+ South South   | Delta      |               21 |     2527226755.93
+ South East    | Imo        |               19 |     2495476566.29
+ North West    | Sokoto     |               18 |     2331216874.15
+ North West    | Kano       |               40 |     2259500877.78
+ South South   | Rivers     |               44 |     1731012803.10
+ North Central | Benue      |               19 |     1671739132.45
+ North West    | Kaduna     |               15 |     1656813137.85
+(10 rows)
+
+ year | tax_code | revenue_collected 
+------+----------+-------------------
+ 2024 | CIT      |    69445795658.62
+ 2024 | PIT      |     2204863163.51
+ 2025 | CIT      |    68335516643.50
+ 2025 | PIT      |     2125173985.98
+ 2025 | VAT      |    14626339549.97
+ 2025 | WHT      |     1752661383.93
+ 2026 | CIT      |    71106998258.02
+ 2026 | PIT      |     2221111479.92
+ 2026 | VAT      |    16067772514.39
+ 2026 | WHT      |     1953697030.43
+(10 rows)
+
+ office_code |           office_name            | revenue_collected 
+-------------+----------------------------------+-------------------
+ LG-APP      | NRS Apapa Large Taxpayers Office |    30880320132.44
+ TO033       | NRS Lagos Tax Office             |    27955316209.74
+ LG-VI       | NRS Victoria Island Tax Office   |    24407160823.19
+ LG-IKJ      | NRS Ikeja Tax Office             |    22833801978.71
+ LG-LKI      | NRS Lekki Tax Office             |    15253883092.66
+ TO007       | NRS FCT Abuja Tax Office         |    14995335552.44
+ AB-WSE      | NRS Wuse Tax Office              |    14127037227.81
+ AB-GAR      | NRS Garki Tax Office             |     8991217051.91
+ TO029       | NRS Delta Tax Office             |     7918082012.49
+ TO019       | NRS Sokoto Tax Office            |     6804977792.61
+(10 rows)
+
+ tax_code | returns_filed | on_time | pct_on_time 
+----------+---------------+---------+-------------
+ CIT      |          1395 |    1112 |        79.7
+ PIT      |          4115 |    3278 |        79.7
+ VAT      |          9690 |    7760 |        80.1
+ WHT      |          3196 |    2530 |        79.2
+(4 rows)
+
+    tin     |              taxpayer_name               | balance_owed 
+------------+------------------------------------------+--------------
+ 1008524916 | Summit Ventures Enterprises Ltd          | 940686229.06
+ 1008089274 | Sapphire Pharmaceuticals Enterprises Ltd | 887718669.80
+ 1007692071 | Crescent Pharmaceuticals Ltd             | 801168837.21
+ 1008136255 | Golden Properties Holdings Ltd           | 789069197.51
+ 1007726239 | Sapphire Motors Nigeria Ltd              | 753652706.98
+ 1007397372 | Unity Pharmaceuticals Holdings Ltd       | 745234391.37
+ 1008366889 | Summit Oil and Gas Services Plc          | 660965228.69
+ 1006453481 | Harmony Packaging Ltd                    | 609351633.04
+ 1007717697 | Benue Valley Microfinance Ltd            | 566535732.81
+ 1006714012 | Northstar Motors Ltd                     | 528268537.57
+(10 rows)
+
+ refund_id |    tin     |               taxpayer_name               |   amount   | request_date 
+-----------+------------+-------------------------------------------+------------+--------------
+       341 | 1008452309 | Sahel Foods Plc                           |   55513.32 | 2026-09-20
+       344 | 1007610922 | Delta Oil and Gas Services Nigeria Ltd    |   23006.65 | 2026-09-28
+       346 | 1006667031 | Niger Bridge Pharmaceuticals Nigeria Ltd  |   29605.81 | 2026-10-02
+       349 | 1006462023 | Savannah Construction Holdings Ltd        |  261762.22 | 2026-10-10
+       351 | 1007662174 | Harmony Ventures Ltd                      |  147651.10 | 2026-10-16
+       352 | 1007008711 | Crescent Ventures Holdings Ltd            |    7907.55 | 2026-10-16
+       353 | 1007004440 | Northstar Logistics Nigeria Ltd           |   68775.41 | 2026-10-17
+       354 | 1006876310 | Sapphire Tech Solutions Enterprises Ltd   |   53720.83 | 2026-10-22
+       355 | 1007410185 | Savannah Telecoms Enterprises Ltd         | 9949225.06 | 2026-10-24
+       356 | 1007034337 | Harmony Telecoms Ltd                      |    7956.03 | 2026-10-28
+       357 | 1007290597 | Benue Valley Tech Solutions Nigeria Ltd   |  733426.84 | 2026-11-08
+       358 | 1007623735 | Atlantic Logistics Nigeria Ltd            |    8733.74 | 2026-11-09
+       359 | 1006555985 | Niger Bridge Ventures Plc                 |    3686.30 | 2026-11-13
+       360 | 1007021524 | Atlantic Packaging Enterprises Ltd        |   22610.85 | 2026-11-13
+       361 | 1008319908 | Cedar Ventures Holdings Ltd               |    5780.58 | 2026-11-13
+       362 | 1008114900 | Royal Logistics Nigeria Ltd               |   20654.85 | 2026-11-13
+       363 | 1007414456 | Heritage Properties Ltd                   |    8236.62 | 2026-11-13
+       364 | 1007303410 | Savannah Agro Allied Nigeria Ltd          |  121864.51 | 2026-11-13
+       365 | 1007854369 | Golden Agro Allied Enterprises Ltd        |  416749.77 | 2026-11-13
+       366 | 1006940375 | Sahel Properties Ltd                      |  105786.02 | 2026-11-13
+       367 | 1006914749 | Delta Foods Plc                           |  100196.77 | 2026-11-13
+       368 | 1006799432 | Harmony Logistics Enterprises Ltd         |  222207.09 | 2026-11-13
+       369 | 1007961144 | Unity Microfinance Nigeria Ltd            |  836282.71 | 2026-11-13
+       370 | 1008456580 | Evergreen Motors Holdings Ltd             |   12789.13 | 2026-11-13
+       371 | 1006538901 | Evergreen Tech Solutions Holdings Ltd     |   51296.66 | 2026-11-13
+       372 | 1007448624 | Evergreen Motors Ltd                      |   14836.77 | 2026-11-13
+       373 | 1007346120 | Savannah Energy Ltd                       | 7354277.46 | 2026-11-13
+       374 | 1007956873 | Unity Agro Allied Holdings Ltd            |   38050.26 | 2026-11-13
+       375 | 1006995898 | Benue Valley Construction Enterprises Ltd |    5712.99 | 2026-11-13
+       376 | 1008285740 | Sahel Logistics Holdings Ltd              |   53259.65 | 2026-11-13
+       377 | 1006859226 | Cedar Telecoms Plc                        | 1347635.13 | 2026-11-13
+(31 rows)
+
+    role     | returns_reviewed | officers 
+-------------+------------------+----------
+ AUDITOR     |              672 |       44
+ TAX_OFFICER |            17282 |      139
+(2 rows)
+
