@@ -67,4 +67,4 @@ docker compose down         # stop everything
 ```
 
 ## AI Use Declaration
-_(To be completed at the end of the semester.)_
+_(AI tools were used as learning and support resources during this assignment. AI assistance used to clarify concepts, explain challenging areas, troubleshoot issues, and improve my understanding of the project.)_
