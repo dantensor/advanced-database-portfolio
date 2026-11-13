@@ -1,0 +1,106 @@
+
+=== Q1. Get a taxpayer's full profile by TIN ===
+Without an index: COLLSCAN - documents examined: 2000
+With an index:    IXSCAN - documents examined: 1
+Found: Fatima Okafor | INDIVIDUAL | NRS Lagos Tax Office | 3 returns, all in the same document
+
+=== Q2. Flexible schema: individuals and companies in one collection ===
+Individuals: 1500 | Companies: 500
+Health-sector companies registered in Lagos (dot notation into nested fields):
+{
+  tin: '1008025209',
+  name: 'Atlantic Microfinance Plc',
+  office: {
+    code: 'LG-IKJ'
+  }
+}
+{
+  tin: '1006654218',
+  name: 'Atlantic Telecoms Ltd',
+  office: {
+    code: 'TO033'
+  }
+}
+{
+  tin: '1006415042',
+  name: 'Benue Valley Motors Nigeria Ltd',
+  office: {
+    code: 'TO033'
+  }
+}
+{
+  tin: '1006564527',
+  name: 'Cedar Energy Holdings Ltd',
+  office: {
+    code: 'LG-IKJ'
+  }
+}
+{
+  tin: '1008341263',
+  name: 'Crescent Pharmaceuticals Ltd',
+  office: {
+    code: 'LG-IKJ'
+  }
+}
+
+=== Q3. Revenue collected in 2025 by state (aggregation pipeline) ===
+{
+  state: 'Lagos',
+  paying_taxpayers: 742,
+  revenue: 42511957396.36
+}
+{
+  state: 'FCT Abuja',
+  paying_taxpayers: 349,
+  revenue: 12708135820.63
+}
+{
+  state: 'Abia',
+  paying_taxpayers: 30,
+  revenue: 2602469123.37
+}
+{
+  state: 'Delta',
+  paying_taxpayers: 21,
+  revenue: 2527226755.93
+}
+{
+  state: 'Imo',
+  paying_taxpayers: 19,
+  revenue: 2495476566.29
+}
+
+=== Q4. Taxpayers with the most LATE returns ===
+{
+  late_returns: 18,
+  tin: '1007559670',
+  name: 'Pinnacle Agro Allied Holdings Ltd'
+}
+{
+  late_returns: 17,
+  tin: '1006496191',
+  name: 'Sapphire Oil and Gas Services Nigeria Ltd'
+}
+{
+  late_returns: 16,
+  tin: '1008059377',
+  name: 'Delta Logistics Enterprises Ltd'
+}
+{
+  late_returns: 15,
+  tin: '1008097816',
+  name: 'Summit Pharmaceuticals Holdings Ltd'
+}
+{
+  late_returns: 14,
+  tin: '1007213719',
+  name: 'Cedar Telecoms Plc'
+}
+
+=== Q5. Record a new payment INSIDE the nested document ===
+Documents modified: 1 | payments on return 1: 1 -> 2
+
+=== Q6. The cost of copying data: rename one tax office ===
+SQL rows to update: 1 | MongoDB documents updated: 166
+
+Done.
