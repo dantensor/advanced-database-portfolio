@@ -67,4 +67,9 @@ docker compose down         # stop everything
 ```
 
 ## AI Use Declaration
-_(AI tools were used as learning and support resources during this assignment. AI assistance used to clarify concepts, explain challenging areas, troubleshoot issues, and improve my understanding of the project.)_
+
+**AI tools used:** I used ChatGPT/META AI/CLAUDE mainly as a learning and clarification tool while working on this project. Whenever I came across concepts or technical areas that I found difficult to understand, I used it to ask questions, get simpler explanations, and work through the parts that were not making sense to me.
+
+**What they were used for:** AI tools were used as learning and support resources during this assignment: to clarify concepts, explain challenging areas, help draft and debug SQL, MongoDB and shell scripts and documentation, and troubleshoot Docker issues.
+
+**How the output was reviewed and verified:** I ran every script myself in Docker and checked the outputs; the saved results in the repository come from those runs. I re-ran the demos to confirm they give the same results, read through the explanations to make sure I understand them, and edited the documentation. I take responsibility for the accuracy and understanding of all submitted work.
